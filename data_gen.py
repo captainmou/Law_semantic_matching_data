@@ -21,7 +21,7 @@ for i in focus_list:
         f.close()
 # print('focus_len:',focus_len)
 
-def gen(focus_len,dir_list,data_in_path,data_out_path='example',n=3):
+def gen(focus_len,dir_list,data_in_path,data_out_path='example',n=10):
     rand_num_ran=[sum(focus_len[i:]) for i in range(len(focus_len))]
     rand_num_ran.append(0)
     # print(rand_num_ran)
@@ -55,18 +55,23 @@ def gen(focus_len,dir_list,data_in_path,data_out_path='example',n=3):
                     r4 = random.randint(0, l1 - 1)
                     r5 = random.randint(0, l2 - 1)
                     # print(r3,r4,r5)
-                    s['Q']=f1[r3][:512]
-                    s['D1']=f1[r4][:512]
-                    s['D2']=f2[r5][:512]
-                    # s['Q']=f1[r3][-512:]
-                    # s['D1']=f1[r4][-512:]
-                    # s['D2']=f2[r5][-512:]
+                    s['Q']=f1[r3]
+                    label=random.randint(0,1)
+
+                    if label==0:
+                        s['D1']=f1[r4]
+                        s['D2']=f2[r5]
+                    else:
+                        s['D1']=f2[r5]
+                        s['D2'] = f1[r4]
+                    s['label'] = label
 
                     print('focus1:'+ dir_list[r1])
                     print(s['Q'])
                     print(s['D1'])
                     print('focus2:'+ dir_list[r2])
                     print(s['D2'])
+                    print(label)
                     print('\n')
                     json_str = json.dumps(s, ensure_ascii=False)
                     out.write(json_str + '\n')
